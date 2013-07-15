@@ -4,31 +4,31 @@ var test_board = new Board();
 exports.fen_updates = function(test) {
   test_board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-  test_board.update_state(52, 36);
+  test_board.move(52, 36);
   test.equal(test_board.get_fen(), "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
 
   test_board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-  test_board.update_state(52, 36);
+  test_board.move(52, 36);
   test.equal(test_board.get_fen(), "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
 
-  test_board.update_state(10, 26); // sicilian
+  test_board.move(10, 26); // sicilian
   test.equal(test_board.get_fen(), "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2");
 
-  test_board.update_state(62, 45);
+  test_board.move(62, 45);
   test.equal(test_board.get_fen(), "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2");
 
   test.done();
 }
 
-exports.update_state_works_identically_with_integer_and_string_input = function(test) {
+exports.move_works_identically_with_integer_and_string_input = function(test) {
   test_board.set_fen("rnbq1bnr/p1pppk2/8/Pp1P4/5ppp/1PN4N/1BP1PPPP/R2QKBR1 b KQkq - 1 11");
-  test_board.update_state(7, 31, function(result) {
+  test_board.move(7, 31, function(result) {
     test.equal(result, "complete")
   });
 
   test_board.set_fen("rnbq1bnr/p1pppk2/8/Pp1P4/5ppp/1PN4N/1BP1PPPP/R2QKBR1 b KQkq - 1 11");
-  test_board.update_state("7", "31", function(result) {
+  test_board.move("7", "31", function(result) {
     test.equal(result, "complete")
   });
 
@@ -57,7 +57,7 @@ exports.pawn_moves = function(test) {
 
 exports.en_passant_square_is_a_valid_move = function(test) {
   test_board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-  test_board.update_state(52, 36);
+  test_board.move(52, 36);
   test.deepEqual(test_board.get_valid_locations(11).sort(), [19, 27].sort());
 
   test.done();
