@@ -155,3 +155,18 @@ exports.king_cannot_castle_through_or_into_check = function(test) {
 
   test.done();
 }
+
+exports.pawn_can_promote_upon_reaching_back_rank = function(test) {
+  board.set_fen("8/P7/8/8/8/8/1K3k2/8 w - - 0 1");
+  board.move(8, 0, function(message, callback) {
+    if (message === "promote") {
+      callback("Q");
+    }
+
+    if (message === "complete") {
+      test.equal(board.get_fen(), "Q7/8/8/8/8/8/1K3k2/8 b - - 1 1");
+    }
+  });
+
+  test.done();
+}
