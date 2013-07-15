@@ -52,10 +52,7 @@ exports.pawn_can_promote_while_capturing = function(test) {
 
     if (message === "complete") {
       test.equal(board.get_fen(), "1Q6/8/8/8/8/8/1K3k2/8 b - - 0 1");
-
-      if ('undefined' !== typeof callback_or_piece) {
-        test.equal(callback_or_piece, "b");
-      }
+      test.equal(callback_or_piece, "b");
     }
   });
 
