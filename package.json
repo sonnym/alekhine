@@ -1,6 +1,6 @@
 { "name": "alekhine"
 , "description": "Simple chessboard implementation with move validation"
-, "version": "0.5.4"
+, "version": "0.5.5"
 , "author": "Sonny Michaud <michaud.sonny@gmail.com> (https://github.com/sonnym)"
 
 , "main" : "lib/alekhine.js"
