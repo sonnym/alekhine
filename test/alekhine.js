@@ -1,7 +1,7 @@
 var Board = require("./../lib/alekhine.js");
 var test_board = new Board();
 
-exports.fen_updates = function(test) {
+exports.fen_updates_and_moves = function(test) {
   test_board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
   test_board.move(52, 36);
@@ -35,7 +35,6 @@ exports.move_works_identically_with_integer_and_string_input = function(test) {
   test.done();
 }
 
-// piece moves
 exports.pawn_moves = function(test) {
   test_board.set_fen("8/7p/4K2P/8/4k3/8/8/8 w - - 0 1");
   test.equal(test_board.get_valid_locations(15).length, 0);
