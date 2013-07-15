@@ -7,3 +7,21 @@ exports.rook_moves = function(test) {
 
   test.done();
 }
+
+exports.rook_move_prevents_castling = function(test) {
+  board.set_fen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+
+  board.move(56, 57);
+  test.equal(board.get_castling_availability(), "Kkq");
+
+  board.move(0, 1);
+  test.equal(board.get_castling_availability(), "Kk");
+
+  board.move(63, 62);
+  test.equal(board.get_castling_availability(), "k");
+
+  board.move(7, 6);
+  test.equal(board.get_castling_availability(), "-");
+
+  test.done();
+}
