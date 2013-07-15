@@ -46,3 +46,13 @@ exports.king_move_prevents_castling = function(test) {
 
   test.done();
 }
+
+exports.castle_squares_are_not_valid_if_castling_unavailable = function(test) {
+  board.set_fen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1");
+  test.equal(board.get_valid_locations(60).length, 2);
+
+  board.set_fen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b - - 0 1");
+  test.equal(board.get_valid_locations(4).length, 2);
+
+  test.done();
+}
