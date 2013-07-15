@@ -34,3 +34,21 @@ exports.move_works_identically_with_integer_and_string_input = function(test) {
 
   test.done();
 }
+
+exports.result_identifies_unwon_postiion = function(test) {
+  board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  test.equal(board.result(), null);
+  test.done();
+}
+
+exports.result_identifies_won_position = function(test) {
+  board.set_fen("1K5r/8/1k6/8/8/8/8/8 w - - 0 1");
+  test.equal(board.result(), "0-1");
+  test.done();
+}
+
+exports.result_identifies_stalemate_position = function(test) {
+  board.set_fen("8/2r5/1q6/3K1k2/8/8/8/8 w - - 0 1");
+  test.equal(board.result(), "1/2-1/2");
+  test.done();
+}
