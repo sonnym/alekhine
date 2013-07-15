@@ -9,12 +9,13 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       "type": "file",
       "data": {
         "language": {
-          "nameMatchers": [".md"],
-          "commentsOnly": true,
-          "name": "Markdown"
+          "nameMatchers": [".js"],
+          "pygmentsLexer": "javascript",
+          "singleLineComment": ["//"],
+          "name": "JavaScript"
         },
-        "sourcePath": "/home/sonny/src/alekhine/README.md",
-        "projectPath": "README.md",
+        "sourcePath": "/home/sonny/src/alekhine/lib/alekhine.js",
+        "projectPath": "lib/alekhine.js",
         "targetPath": "index",
         "firstHeader": {
           "type": "heading",
@@ -30,55 +31,16 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "type": "heading",
               "data": {
                 "level": 2,
-                "title": "Installation",
-                "slug": "installation"
+                "title": "constructor",
+                "slug": "constructor"
               },
               "depth": 2
-            }
-          ]
-        },
-        "title": "Alekhine"
-      },
-      "depth": 1,
-      "outline": [
-        {
-          "type": "heading",
-          "data": {
-            "level": 2,
-            "title": "Installation",
-            "slug": "installation"
-          },
-          "depth": 2
-        }
-      ]
-    }, {
-      "type": "file",
-      "data": {
-        "language": {
-          "nameMatchers": [".js"],
-          "pygmentsLexer": "javascript",
-          "singleLineComment": ["//"],
-          "name": "JavaScript"
-        },
-        "sourcePath": "/home/sonny/src/alekhine/lib/alekhine.js",
-        "projectPath": "lib/alekhine.js",
-        "targetPath": "alekhine",
-        "firstHeader": {
-          "type": "heading",
-          "data": {
-            "level": 1,
-            "title": "Alekhine Chess",
-            "slug": "alekhine-chess",
-            "isFileHeader": true
-          },
-          "depth": 1,
-          "children": [
-            {
+            }, {
               "type": "heading",
               "data": {
                 "level": 2,
-                "title": "constructor",
-                "slug": "constructor"
+                "title": "get_valid_locations",
+                "slug": "get-valid-locations"
               },
               "depth": 2
             }, {
@@ -117,14 +79,38 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "type": "heading",
               "data": {
                 "level": 2,
+                "title": "get_castling_availability",
+                "slug": "get-castling-availability"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
                 "title": "move",
                 "slug": "move"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "update_state",
+                "slug": "update-state"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "mult_check",
+                "slug": "mult-check"
               },
               "depth": 2
             }
           ]
         },
-        "title": "Alekhine Chess"
+        "title": "Alekhine"
       },
       "depth": 1,
       "outline": [
@@ -134,6 +120,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "level": 2,
             "title": "constructor",
             "slug": "constructor"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
+            "title": "get_valid_locations",
+            "slug": "get-valid-locations"
           },
           "depth": 2
         }, {
@@ -172,8 +166,32 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "type": "heading",
           "data": {
             "level": 2,
+            "title": "get_castling_availability",
+            "slug": "get-castling-availability"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
             "title": "move",
             "slug": "move"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
+            "title": "update_state",
+            "slug": "update-state"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
+            "title": "mult_check",
+            "slug": "mult-check"
           },
           "depth": 2
         }
