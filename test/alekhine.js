@@ -52,12 +52,18 @@ exports.pawn_moves = function(test) {
   test_board.set_fen("4k3/8/8/3p4/4P3/8/8/4K3 w - - 0 1");
   test.deepEqual(test_board.get_valid_locations(36).sort(), [27, 28]);
 
-  // en passant square updating correctly
+  test.done();
+}
+
+exports.en_passant_square_is_a_valid_move = function(test) {
   test_board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
   test_board.update_state(52, 36);
   test.deepEqual(test_board.get_valid_locations(11).sort(), [19, 27].sort());
 
-  // disallow moving into check
+  test.done();
+}
+
+exports.pawn_move_cannot_reveal_check = function(test) {
   test_board.set_fen("8/8/k7/q1P1K3/8/8/8/8 w - - 0 1");
   test.deepEqual(test_board.get_valid_locations(26).length, 0);
 
@@ -74,10 +80,13 @@ exports.knight_moves = function(test) {
   test_board.set_fen("7k/8/8/8/N7/8/8/7K w - - 0 1");
   test.deepEqual(test_board.get_valid_locations(32).sort(), [17, 26, 42, 49]);
 
-  // disallow moving into check
+  test.done();
+}
+
+exports.knight_move_cannot_reveal_check = function(test) {
   test_board.set_fen("8/3k4/2q5/8/4N3/8/6K1/8 w - - 0 1");
   test.equal(test_board.get_valid_locations(36).length, 0);
-
+  
   test.done();
 }
 
@@ -125,15 +134,23 @@ exports.king_moves = function(test) {
   test_board.set_fen("8/8/8/1q6/3K1k2/8/8/2r5 w - - 0 1");
   test.equal(test_board.get_valid_locations(33).length, 0);
 
-  // ability to castle
+  test.done();
+}
+
+exports.king_can_castle_king_or_queen_side = function(test) {
   test_board.set_fen("4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1");
   test.equal(test_board.get_valid_locations(60).length, 7);
+
   test_board.set_fen("r3k2r/8/8/8/8/8/8/4K3 b kq - 0 1");
   test.equal(test_board.get_valid_locations(4).length, 7);
 
-  // but not through or into check
+  test.done();
+}
+
+exports.king_cannot_castle_through_or_into_check = function(test) {
   test_board.set_fen("4k3/8/8/2q5/8/8/8/R3K2R w KQ - 0 1");
   test.equal(test_board.get_valid_locations(60).length, 4);
+
   test_board.set_fen("r3k2r/8/8/5Q2/8/8/8/4K3 b kq - 0 1");
   test.equal(test_board.get_valid_locations(4).length, 2);
 
