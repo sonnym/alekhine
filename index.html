@@ -34,11 +34,37 @@ may move</li>
   <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">move_count</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="s2">&quot;1/2-1/2&quot;</span><span class="p">;</span>
   <span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="all-moves">all_moves</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>returns an object with all possible moves for the current state of the game,
+of the form:</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><pre><code>{ '48': { piece: 'P', valid: [ 40, 32 ] },
+  '49': { piece: 'P', valid: [ 41, 33 ] },
+  '50': { piece: 'P', valid: [ 42, 34 ] },
+  '51': { piece: 'P', valid: [ 43, 35 ] },
+  '52': { piece: 'P', valid: [ 44, 36 ] },
+  '53': { piece: 'P', valid: [ 45, 37 ] },
+  '54': { piece: 'P', valid: [ 46, 38 ] },
+  '55': { piece: 'P', valid: [ 47, 39 ] },
+  '57': { piece: 'N', valid: [ 42, 40 ] },
+  '62': { piece: 'N', valid: [ 47, 45 ] } }
+</code></pre></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all_moves</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">piece_moves</span> <span class="o">=</span> <span class="p">{};</span>
+
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  <span class="nx">find_pieces</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get_state</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">get_turn</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">position</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">valid</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get_valid_locations</span><span class="p">(</span><span class="nx">position</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">valid</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">piece_moves</span><span class="p">[</span><span class="nx">position</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;piece&quot;</span><span class="o">:</span> <span class="nx">piece</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="o">:</span> <span class="nx">valid</span> <span class="p">};</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">piece_moves</span><span class="p">;</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="move">move</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>prepare changes to state before calling private function, allowing
-allows messaging for pawn promotion */</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><ul>
+allows messaging for pawn promotion</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><ul>
 <li>from_raw String|Number initial position of piece</li>
 <li>to_raw String|Number initial position of piece</li>
-<li>callback Function </li>
+<li>callback Function 
+<ul><li>error String|Null an error if one occurred or null</li>
+<li>event Object data representing the event - used for promotion and capture</li></ul></li>
 </ul></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from_raw</span><span class="p">,</span> <span class="nx">to_raw</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">from</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">from_raw</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">to</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">to_raw</span><span class="p">);</span>
@@ -49,10 +75,7 @@ allows messaging for pawn promotion */</p></div></div><div class="code"><div cla
   <span class="kd">var</span> <span class="nx">captured</span> <span class="o">=</span> <span class="nx">capture</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">_state</span><span class="p">[</span><span class="nx">to</span><span class="p">]</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">valid</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">callback</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-
+    <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;invalid move&quot;</span><span class="p">));</span>
     <span class="k">return</span><span class="p">;</span>
   <span class="p">}</span>
 
@@ -66,15 +89,9 @@ allows messaging for pawn promotion */</p></div></div><div class="code"><div cla
   <span class="k">if</span> <span class="p">((</span><span class="nx">piece</span> <span class="o">===</span> <span class="s2">&quot;p&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">to</span> <span class="o">&gt;</span> <span class="mi">55</span> <span class="o">&amp;&amp;</span> <span class="nx">to</span> <span class="o">&lt;</span> <span class="mi">64</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">piece</span> <span class="o">===</span> <span class="s2">&quot;P&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">to</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">to</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">))</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">callback</span><span class="p">(</span><span class="s2">&quot;promote&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">new_piece</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">update_state</span><span class="p">(</span><span class="nx">new_piece</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">callback</span><span class="p">(</span><span class="s2">&quot;complete&quot;</span><span class="p">,</span> <span class="nx">captured</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
-    <span class="p">}</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;promote&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">new_piece</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">update_state</span><span class="p">(</span><span class="nx">new_piece</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span>
+    <span class="p">}});</span>
 
   <span class="cm">/* castling */</span>
   <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">piece</span> <span class="o">===</span> <span class="s2">&quot;k&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">from</span> <span class="o">===</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">from</span> <span class="o">-</span> <span class="nx">to</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
@@ -101,10 +118,10 @@ allows messaging for pawn promotion */</p></div></div><div class="code"><div cla
   <span class="cm">/* regular pawn moves */</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">update_state</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">capture</span><span class="p">);</span>
-        
-    <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">callback</span><span class="p">(</span><span class="s2">&quot;complete&quot;</span><span class="p">,</span> <span class="nx">captured</span><span class="p">);</span>
-    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">captured</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;capture&quot;</span><span class="o">:</span> <span class="nx">captured</span> <span class="p">});</span>
   <span class="p">}</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="update-state">update_state</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>updates the state array and fen string - piece is necessary in the case
 of pawn promotions</p></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">update_state</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
@@ -401,30 +418,6 @@ and position to a callback.</p></div></div><div class="code"><div class="wrapper
       <span class="nx">callback</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="all-moves">all_moves</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>returns an object with all possible moves for the current state of the game,
-of the form:</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><pre><code>{ '48': { piece: 'P', valid: [ 40, 32 ] },
-  '49': { piece: 'P', valid: [ 41, 33 ] },
-  '50': { piece: 'P', valid: [ 42, 34 ] },
-  '51': { piece: 'P', valid: [ 43, 35 ] },
-  '52': { piece: 'P', valid: [ 44, 36 ] },
-  '53': { piece: 'P', valid: [ 45, 37 ] },
-  '54': { piece: 'P', valid: [ 46, 38 ] },
-  '55': { piece: 'P', valid: [ 47, 39 ] },
-  '57': { piece: 'N', valid: [ 42, 40 ] },
-  '62': { piece: 'N', valid: [ 47, 45 ] } }
-</code></pre></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all_moves</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">piece_moves</span> <span class="o">=</span> <span class="p">{};</span>
-
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-  <span class="nx">find_pieces</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get_state</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">get_turn</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">position</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">valid</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get_valid_locations</span><span class="p">(</span><span class="nx">position</span><span class="p">);</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="nx">valid</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">piece_moves</span><span class="p">[</span><span class="nx">position</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;piece&quot;</span><span class="o">:</span> <span class="nx">piece</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="o">:</span> <span class="nx">valid</span> <span class="p">};</span>
-    <span class="p">}</span>
-  <span class="p">});</span>
-
-  <span class="k">return</span> <span class="nx">piece_moves</span><span class="p">;</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="is-check">is_check</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>determine whether the given state is check for the player</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><ul>
 <li>state Array state array</li>
 <li>whom String "w" or "b" - player whose possibility of check is in question</li>
