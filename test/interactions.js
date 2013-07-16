@@ -21,6 +21,15 @@ exports.fen_updates_and_moves = function(test) {
   test.done();
 }
 
+exports.move_callback_error_for_invalid_move = function(test) {
+  board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  board.move(0, 1, function(err, data) {
+    test.equal(err.message, "invalid move");
+  });
+
+  test.done();
+};
+
 exports.move_works_identically_with_integer_and_string_input = function(test) {
   board.set_fen("rnbq1bnr/p1pppk2/8/Pp1P4/5ppp/1PN4N/1BP1PPPP/R2QKBR1 b KQkq - 1 11");
   board.move(7, 31, function(result) {

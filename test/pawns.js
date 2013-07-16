@@ -30,32 +30,34 @@ exports.en_passant_square_is_a_valid_move = function(test) {
 
 exports.pawn_can_promote_upon_reaching_back_rank = function(test) {
   board.set_fen("8/P7/8/8/8/8/1K3k2/8 w - - 0 1");
-  board.move(8, 0, function(message, callback) {
-    if (message === "promote") {
-      callback("Q");
+  board.move(8, 0, function(error, data) {
+    test.equal(null, error)
+
+    if (data.promote) {
+      data.promote("Q");
     }
 
-    if (message === "complete") {
-      test.equal(board.get_fen(), "Q7/8/8/8/8/8/1K3k2/8 b - - 1 1");
-    }
   });
 
+  test.equal(board.get_fen(), "Q7/8/8/8/8/8/1K3k2/8 b - - 1 1");
   test.done();
 }
 
 exports.pawn_can_promote_while_capturing = function(test) {
   board.set_fen(  "1b6/P7/8/8/8/8/1K3k2/8 w - - 0 1");
-  board.move(8, 1, function(message, callback_or_piece) {
-    if (message === "promote") {
-      callback_or_piece("Q");
+  board.move(8, 1, function(error, data) {
+    test.equal(null, error)
+
+    if (data.promote) {
+      data.promote("Q");
     }
 
-    if (message === "complete") {
-      test.equal(board.get_fen(), "1Q6/8/8/8/8/8/1K3k2/8 b - - 0 1");
-      test.equal(callback_or_piece, "b");
+    if (data.captured) {
+      test.equal(data.captured, "b");
     }
   });
 
+  test.equal(board.get_fen(), "1Q6/8/8/8/8/8/1K3k2/8 b - - 0 1");
   test.done();
 }
 
