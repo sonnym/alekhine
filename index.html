@@ -5,11 +5,10 @@
 <span class="p">}</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Board</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="get-valid-locations">get_valid_locations</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><ul>
-<li>from: an array index from the state array
-returns all the valid array indices to which the piece in the from index
-may move</li>
-</ul></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">get_valid_locations</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">valid_locations</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_fen</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<li>from String the square for which valid destinations will be generated</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>returns all the valid array indices to which the piece in the from index
+may move</p></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">get_valid_locations</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">valid_locations</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_fen</span><span class="p">,</span> <span class="nx">square2position</span><span class="p">(</span><span class="nx">from</span><span class="p">),</span> <span class="kc">true</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">position2square</span><span class="p">);</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="get-fen">get_fen</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>get the current FEN representation of the board</p></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">get_fen</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fen</span><span class="p">;</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="set-fen">set_fen</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>set the entire FEN representation of the board</p></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">set_fen</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fen</span><span class="p">)</span> <span class="p">{</span>
@@ -35,39 +34,39 @@ may move</li>
     <span class="k">return</span> <span class="s2">&quot;1/2-1/2&quot;</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="all-moves">all_moves</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>returns an object with all possible moves for the current state of the game,
-of the form:</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><pre><code>{ '48': { piece: 'P', valid: [ 40, 32 ] },
-  '49': { piece: 'P', valid: [ 41, 33 ] },
-  '50': { piece: 'P', valid: [ 42, 34 ] },
-  '51': { piece: 'P', valid: [ 43, 35 ] },
-  '52': { piece: 'P', valid: [ 44, 36 ] },
-  '53': { piece: 'P', valid: [ 45, 37 ] },
-  '54': { piece: 'P', valid: [ 46, 38 ] },
-  '55': { piece: 'P', valid: [ 47, 39 ] },
-  '57': { piece: 'N', valid: [ 42, 40 ] },
-  '62': { piece: 'N', valid: [ 47, 45 ] } }
+of the form (for the starting position):</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><pre><code>{ "a2": { piece: "P", valid: [ "a3", "a4" ] },
+  "b2": { piece: "P", valid: [ "b3", "b4" ] },
+  "c2": { piece: "P", valid: [ "c3", "c4" ] },
+  "d2": { piece: "P", valid: [ "d3", "d4" ] },
+  "e2": { piece: "P", valid: [ "e3", "e4" ] },
+  "f2": { piece: "P", valid: [ "f3", "f4" ] },
+  "g2": { piece: "P", valid: [ "g3", "g4" ] },
+  "h2": { piece: "P", valid: [ "h3", "h4" ] },
+  "b1": { piece: "N", valid: [ "c3", "a3" ] },
+  "g1": { piece: "N", valid: [ "h3", "f3" ] } }
 </code></pre></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all_moves</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">piece_moves</span> <span class="o">=</span> <span class="p">{};</span>
 
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
   <span class="nx">find_pieces</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get_state</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">get_turn</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">piece</span><span class="p">,</span> <span class="nx">position</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">valid</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get_valid_locations</span><span class="p">(</span><span class="nx">position</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">valid</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get_valid_locations</span><span class="p">(</span><span class="nx">position2square</span><span class="p">(</span><span class="nx">position</span><span class="p">));</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">valid</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">piece_moves</span><span class="p">[</span><span class="nx">position</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;piece&quot;</span><span class="o">:</span> <span class="nx">piece</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="o">:</span> <span class="nx">valid</span> <span class="p">};</span>
+      <span class="nx">piece_moves</span><span class="p">[</span><span class="nx">position2square</span><span class="p">(</span><span class="nx">position</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;piece&quot;</span><span class="o">:</span> <span class="nx">piece</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="o">:</span> <span class="nx">valid</span> <span class="p">};</span>
     <span class="p">}</span>
   <span class="p">});</span>
 
   <span class="k">return</span> <span class="nx">piece_moves</span><span class="p">;</span>
 <span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="move">move</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>prepare changes to state before calling private function, allowing
 allows messaging for pawn promotion</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><ul>
-<li>from_raw String|Number initial position of piece</li>
-<li>to_raw String|Number initial position of piece</li>
+<li>from_square String initial position of piece (e.g. "e2")</li>
+<li>to_square String final position of piece (e.g. "e4")</li>
 <li>callback Function 
 <ul><li>error String|Null an error if one occurred or null</li>
 <li>event Object data representing the event - used for promotion and capture</li></ul></li>
-</ul></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from_raw</span><span class="p">,</span> <span class="nx">to_raw</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">from</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">from_raw</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">to</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">to_raw</span><span class="p">);</span>
+</ul></div></div><div class="code"><div class="wrapper"><span class="nx">Board</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from_square</span><span class="p">,</span> <span class="nx">to_square</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">from</span> <span class="o">=</span> <span class="nx">square2position</span><span class="p">(</span><span class="nx">from_square</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">to</span> <span class="o">=</span> <span class="nx">square2position</span><span class="p">(</span><span class="nx">to_square</span><span class="p">);</span>
 
   <span class="kd">var</span> <span class="nx">piece</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_state</span><span class="p">[</span><span class="nx">from</span><span class="p">];</span>
   <span class="kd">var</span> <span class="nx">valid</span> <span class="o">=</span> <span class="nx">valid_locations</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_fen</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -496,8 +495,12 @@ and position to a callback.</p></div></div><div class="code"><div class="wrapper
   <span class="k">return</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="mi">97</span> <span class="o">+</span> <span class="nx">position2col</span><span class="p">(</span><span class="nx">p</span><span class="p">));</span>
 <span class="p">}</span>
 
+<span class="kd">function</span> <span class="nx">position2square</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">position2file</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="o">+</span> <span class="nx">position2rank</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
+<span class="p">}</span>
+
 <span class="kd">function</span> <span class="nx">square2position</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="p">((</span><span class="mi">8</span> <span class="o">-</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">((</span><span class="mi">8</span> <span class="o">-</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">in_array</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
