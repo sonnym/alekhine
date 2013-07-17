@@ -42,3 +42,20 @@ exports.result_identifies_stalemate_position = function(test) {
   test.equal(board.result(), "1/2-1/2");
   test.done();
 }
+
+exports.can_get_structure_of_all_available_moves = function(test) {
+  board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  test.deepEqual(board.all_moves(),
+    { '48': { piece: 'P', valid: [ 40, 32 ] },
+      '49': { piece: 'P', valid: [ 41, 33 ] },
+      '50': { piece: 'P', valid: [ 42, 34 ] },
+      '51': { piece: 'P', valid: [ 43, 35 ] },
+      '52': { piece: 'P', valid: [ 44, 36 ] },
+      '53': { piece: 'P', valid: [ 45, 37 ] },
+      '54': { piece: 'P', valid: [ 46, 38 ] },
+      '55': { piece: 'P', valid: [ 47, 39 ] },
+      '57': { piece: 'N', valid: [ 42, 40 ] },
+      '62': { piece: 'N', valid: [ 47, 45 ] }
+  });
+  test.done();
+}
