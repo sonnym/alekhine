@@ -32,31 +32,31 @@ exports.position_to_column_conversions = function(test) {
 }
 
 exports.position_to_file_conversions = function(test) {
-  test.equal(board.position2file(0), 'a');
-  test.equal(board.position2file(7), 'h');
+  test.equal(board.position2file(0), "a");
+  test.equal(board.position2file(7), "h");
 
-  test.equal(board.position2file(56), 'a');
-  test.equal(board.position2file(63), 'h');
+  test.equal(board.position2file(56), "a");
+  test.equal(board.position2file(63), "h");
 
   test.done();
 }
 
 exports.position_to_square_conversions = function(test) {
-  test.equal(board.position2square(0), 'a8');
-  test.equal(board.position2square(7), 'h8');
+  test.equal(board.position2square(0), "a8");
+  test.equal(board.position2square(7), "h8");
 
-  test.equal(board.position2square(56), 'a1');
-  test.equal(board.position2square(63), 'h1');
+  test.equal(board.position2square(56), "a1");
+  test.equal(board.position2square(63), "h1");
 
   test.done();
 }
 
 exports.square_to_position_conversions = function(test) {
-  test.equal(board.square2position('a8'), 0);
-  test.equal(board.square2position('h8'), 7);
+  test.equal(board.square2position("a8"), 0);
+  test.equal(board.square2position("h8"), 7);
 
-  test.equal(board.square2position('a1'), 56);
-  test.equal(board.square2position('h1'), 63);
+  test.equal(board.square2position("a1"), 56);
+  test.equal(board.square2position("h1"), 63);
 
   test.done();
 }
