@@ -44,7 +44,7 @@ exports.pawn_can_promote_upon_reaching_back_rank = function(test) {
 }
 
 exports.pawn_can_promote_while_capturing = function(test) {
-  board.set_fen(  "1b6/P7/8/8/8/8/1K3k2/8 w - - 0 1");
+  board.set_fen("1b6/P7/8/8/8/8/1K3k2/8 w - - 0 1");
   board.move("a7", "b8", function(error, data) {
     test.equal(null, error)
 
