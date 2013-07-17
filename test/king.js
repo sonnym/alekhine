@@ -38,10 +38,10 @@ exports.king_cannot_castle_through_or_into_check = function(test) {
 exports.king_move_prevents_castling = function(test) {
   board.set_fen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
 
-  board.move(60, 61);
+  board.move("e1", "f1");
   test.equal(board.get_castling_availability(), "kq");
 
-  board.move(4, 5);
+  board.move("e8", "f8");
   test.equal(board.get_castling_availability(), "-");
 
   test.done();

@@ -22,7 +22,7 @@ exports.pawn_moves = function(test) {
 
 exports.en_passant_square_is_a_valid_move = function(test) {
   board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-  board.move(52, 36);
+  board.move("e2", "e4");
   test.deepEqual(board.get_valid_locations(11).sort(), [19, 27].sort());
 
   test.done();
@@ -30,7 +30,7 @@ exports.en_passant_square_is_a_valid_move = function(test) {
 
 exports.pawn_can_promote_upon_reaching_back_rank = function(test) {
   board.set_fen("8/P7/8/8/8/8/1K3k2/8 w - - 0 1");
-  board.move(8, 0, function(error, data) {
+  board.move("a7", "a8", function(error, data) {
     test.equal(null, error)
 
     if (data.promote) {
@@ -45,7 +45,7 @@ exports.pawn_can_promote_upon_reaching_back_rank = function(test) {
 
 exports.pawn_can_promote_while_capturing = function(test) {
   board.set_fen(  "1b6/P7/8/8/8/8/1K3k2/8 w - - 0 1");
-  board.move(8, 1, function(error, data) {
+  board.move("a7", "b8", function(error, data) {
     test.equal(null, error)
 
     if (data.promote) {
