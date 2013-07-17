@@ -3,8 +3,8 @@ var board = new Board();
 
 exports.rook_moves = function(test) {
   board.set_fen("2K1k3/8/8/8/8/8/8/3R4 w - - 0 1");
-  test.deepEqual(board.get_valid_locations(59).sort(), [3, 11, 19, 27, 35, 43, 51, 56, 57, 58, 60, 61, 62, 63].sort());
-
+  test.deepEqual(board.get_valid_locations("d1").sort(),
+                 ["a1", "b1", "c1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "e1", "f1", "g1", "h1"]);
   test.done();
 }
 

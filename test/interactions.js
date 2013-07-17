@@ -46,16 +46,17 @@ exports.result_identifies_stalemate_position = function(test) {
 exports.can_get_structure_of_all_available_moves = function(test) {
   board.set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
   test.deepEqual(board.all_moves(),
-    { '48': { piece: 'P', valid: [ 40, 32 ] },
-      '49': { piece: 'P', valid: [ 41, 33 ] },
-      '50': { piece: 'P', valid: [ 42, 34 ] },
-      '51': { piece: 'P', valid: [ 43, 35 ] },
-      '52': { piece: 'P', valid: [ 44, 36 ] },
-      '53': { piece: 'P', valid: [ 45, 37 ] },
-      '54': { piece: 'P', valid: [ 46, 38 ] },
-      '55': { piece: 'P', valid: [ 47, 39 ] },
-      '57': { piece: 'N', valid: [ 42, 40 ] },
-      '62': { piece: 'N', valid: [ 47, 45 ] }
-  });
+    { "a2": { piece: "P", valid: [ "a3", "a4" ] },
+      "b2": { piece: "P", valid: [ "b3", "b4" ] },
+      "c2": { piece: "P", valid: [ "c3", "c4" ] },
+      "d2": { piece: "P", valid: [ "d3", "d4" ] },
+      "e2": { piece: "P", valid: [ "e3", "e4" ] },
+      "f2": { piece: "P", valid: [ "f3", "f4" ] },
+      "g2": { piece: "P", valid: [ "g3", "g4" ] },
+      "h2": { piece: "P", valid: [ "h3", "h4" ] },
+      "b1": { piece: "N", valid: [ "c3", "a3" ] },
+      "g1": { piece: "N", valid: [ "h3", "f3" ] }
+    });
+
   test.done();
 }
