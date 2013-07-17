@@ -41,6 +41,16 @@ exports.position_to_file_conversions = function(test) {
   test.done();
 }
 
+exports.position_to_square_conversions = function(test) {
+  test.equal(board.position2square(0), 'a8');
+  test.equal(board.position2square(7), 'h8');
+
+  test.equal(board.position2square(56), 'a1');
+  test.equal(board.position2square(63), 'h1');
+
+  test.done();
+}
+
 exports.square_to_position_conversions = function(test) {
   test.equal(board.square2position('a8'), 0);
   test.equal(board.square2position('h8'), 7);
