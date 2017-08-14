@@ -3,6 +3,7 @@
     "description": "Simple chessboard implementation with move validation",
     "version": "0.7.0",
     "author": "Sonny Michaud <michaud.sonny@gmail.com> (https://github.com/sonnym)",
+    "license": "MIT",
     "main": "lib/alekhine.js",
     "scripts": {
         "test": "make test"
