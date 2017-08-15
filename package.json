@@ -1,23 +1,37 @@
-{ "name": "alekhine"
-, "description": "Simple chessboard implementation with move validation"
-, "version": "0.7.0"
-, "author": "Sonny Michaud <michaud.sonny@gmail.com> (https://github.com/sonnym)"
-
-, "main" : "lib/alekhine.js"
-
-, "scripts": {
-    "test": "make test"
-  }
-
-, "devDependencies": {
-    "groc": "*"
-  , "nodeunit": "*"
-  }
-
-, "repository": {
-    "type": "git"
-  , "url": "https://github.com/sonnym/alekhine.git"
-  }
-
-, "engines": { "node": ">=0.6" }
+{
+    "name": "alekhine",
+    "description": "Simple chessboard implementation with move validation",
+    "version": "0.8.0",
+    "author": "Sonny Michaud <michaud.sonny@gmail.com> (https://github.com/sonnym)",
+    "license": "MIT",
+    "main": "lib/alekhine.js",
+    "scripts": {
+        "test": "node_modules/.bin/jest",
+        "doc": "node_modules/.bin/documentation"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.24.1",
+        "babel-jest": "^20.0.3",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+        "babel-preset-env": "^1.6.0",
+        "documentation": "^5.2.1",
+        "jest": "^20.0.4"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sonnym/alekhine.git"
+    },
+    "engines": {
+        "node": ">= 4"
+    },
+    "jest": {
+        "verbose": true,
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+            "lib/**"
+        ]
+    },
+    "transform": {
+        "^.+\\.js$": "babel-jest"
+    }
 }
