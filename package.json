@@ -30,8 +30,5 @@
         "collectCoverageFrom": [
             "lib/**"
         ]
-    },
-    "transform": {
-        "^.+\\.js$": "babel-jest"
     }
 }
