@@ -22,7 +22,7 @@
         "url": "https://github.com/sonnym/alekhine.git"
     },
     "engines": {
-        "node": ">= 4"
+        "node": ">= 6"
     },
     "jest": {
         "verbose": true,
