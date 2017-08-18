@@ -1,7 +1,7 @@
-import Board from '../lib/alekhine'
+import Board from "../lib/alekhine"
 
 describe("bishop moves", () => {
-  const board = new Board()
+  const board = new Board.default()
 
   it("fen updates and moves", () => {
     board.setFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")

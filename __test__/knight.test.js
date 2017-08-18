@@ -1,7 +1,7 @@
-import Board from '../lib/alekhine'
+import Board from "../lib/alekhine"
 
 describe("knight moves", () => {
-  const board = new Board();
+  const board = new Board.default();
 
   it("returns the expected values for white to play", () => {
     board.setFen("7k/8/8/8/8/8/8/1N5K w - - 0 1");

@@ -1,7 +1,7 @@
-import Board from '../lib/alekhine'
+import Board from "../lib/alekhine"
 
 describe("queen moves", () => {
-  const board = new Board()
+  const board = new Board.default()
 
   it("are numerous", () => {
     board.setFen("8/8/4K3/2Q5/4k3/8/8/8 w - - 0 1")

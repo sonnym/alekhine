@@ -1,7 +1,7 @@
-import Board from '../lib/alekhine'
+import Board from "../lib/alekhine"
 
 describe("king moves", () => {
-  const board = new Board()
+  const board = new Board.default()
 
   it("can move to all surrounding squares", () => {
     board.setFen("8/8/1K6/8/4k3/8/8/8 w - - 0 1")
