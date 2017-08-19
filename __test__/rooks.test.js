@@ -1,7 +1,7 @@
 import Board from "../lib/alekhine"
 
 describe("rook moves", () => {
-  const board = new Board.default()
+  const board = new Board()
 
   it("returns expected values for white to play", () => {
     board.setFen("2K1k3/8/8/8/8/8/8/3R4 w - - 0 1")

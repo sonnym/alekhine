@@ -1,7 +1,7 @@
 import Board from "../lib/alekhine"
 
 describe("pawn moves", () => {
-  const board = new Board.default()
+  const board = new Board()
 
   it("basics", () => {
     board.setFen("8/7p/4K2P/8/4k3/8/8/8 w - - 0 1")

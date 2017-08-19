@@ -1,7 +1,4 @@
 {
-  "presets": ["env"],
-  "plugins": [
-    ["transform-es2015-modules-commonjs", { "strict": true }]
-  ]
+  "presets": ["env"]
 }
 

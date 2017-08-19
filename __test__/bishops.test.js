@@ -1,7 +1,7 @@
 import Board from "../lib/alekhine"
 
 describe("bishop moves", () => {
-  const board = new Board.default();
+  const board = new Board();
 
   it("returns expected values for white to play", () => {
     board.setFen("3BB3/8/4K3/8/4k3/8/8/8 w - - 0 1")
