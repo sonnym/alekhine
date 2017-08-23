@@ -1,4 +1,4 @@
-import Board from "../lib/alekhine"
+import Board from "../src/alekhine"
 
 describe("king moves", () => {
   const board = new Board()
