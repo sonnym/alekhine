@@ -3,7 +3,8 @@ module.exports = {
 
   output: {
     filename: "dist/alekhine.js",
-    sourceMapFilename: "dist/alekhine.map"
+    sourceMapFilename: "dist/alekhine.map",
+    libraryTarget: "commonjs2"
   },
 
 	devtool: "#source-map"
