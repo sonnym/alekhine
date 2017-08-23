@@ -4,10 +4,11 @@
     "version": "0.8.0-alpha.1",
     "author": "Sonny Michaud <michaud.sonny@gmail.com> (https://github.com/sonnym)",
     "license": "MIT",
-    "main": "lib/alekhine.js",
+    "main": "dist/alekhine.js",
     "scripts": {
         "test": "node_modules/.bin/jest",
-        "doc": "node_modules/.bin/documentation"
+        "doc": "node_modules/.bin/documentation",
+        "prepublish": "node_modules/.bin/babel --out-file dist/alekhine.js src/alekhine.js"
     },
     "devDependencies": {
         "babel-cli": "^6.24.1",
