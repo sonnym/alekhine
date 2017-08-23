@@ -1,7 +1,7 @@
 {
     "name": "alekhine",
     "description": "Simple chessboard implementation with move validation",
-    "version": "0.8.0-alpha.2",
+    "version": "0.8.0-alpha.3",
     "author": "Sonny Michaud <michaud.sonny@gmail.com> (https://github.com/sonnym)",
     "license": "MIT",
     "main": "dist/alekhine.js",
