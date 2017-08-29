@@ -1,3 +1,5 @@
+var webpack = require("webpack")
+
 module.exports = {
   entry: "./src/alekhine.js",
 
@@ -7,5 +9,20 @@ module.exports = {
     libraryTarget: "commonjs2"
   },
 
-	devtool: "#source-map"
+  devtool: "#source-map",
+
+  module: {
+    rules: [{
+      test: /\.js$/,
+      loader: "babel-loader"
+    }]
+  },
+
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      warnings: true,
+      mangle: true
+    })
+  ]
 }
