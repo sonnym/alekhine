@@ -1,4 +1,4 @@
-import Board from "../src/alekhine"
+import Board from "../src/index"
 
 describe("bishop moves", () => {
   const board = new Board();
