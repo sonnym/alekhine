@@ -13,8 +13,8 @@ export default class Board {
    *
    * Create a board with default starting position.
    */
-  constructor() {
-    this._fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+  constructor(fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
+    this._fen = fen;
     this._state = fen2array(this._fen);
   }
 

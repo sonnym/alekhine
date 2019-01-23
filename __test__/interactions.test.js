@@ -59,3 +59,10 @@ describe("bishop moves", () => {
     )
   })
 })
+
+describe("constructor", () => {
+  it("takes an optional fen", () => {
+    const board = new Board("3k4/8/8/8/8/8/8/4K3 b - - 101 51")
+    expect(board.getTurn()).toEqual("b")
+  })
+})
