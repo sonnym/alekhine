@@ -1,7 +1,7 @@
 var webpack = require("webpack")
 
 module.exports = {
-  entry: "./src/alekhine.js",
+  entry: "./src/index.js",
 
   output: {
     filename: "dist/alekhine.js",

@@ -1,4 +1,4 @@
-import Board from "../src/alekhine"
+import Board from "../src/index"
 
 describe("bishop moves", () => {
   const board = new Board()
@@ -57,5 +57,12 @@ describe("bishop moves", () => {
         "g1": { piece: "N", valid: [ "h3", "f3" ] }
       }
     )
+  })
+})
+
+describe("constructor", () => {
+  it("takes an optional fen", () => {
+    const board = new Board("3k4/8/8/8/8/8/8/4K3 b - - 101 51")
+    expect(board.getTurn()).toEqual("b")
   })
 })
