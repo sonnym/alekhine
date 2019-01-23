@@ -1,4 +1,4 @@
-import { valid_locations, find_pieces, is_check } from './validator'
+import { validLocations, findPieces, isCheck } from './validator'
 import { fen2array, array2fen } from './fen'
 import * as helpers from './helpers'
 
@@ -25,7 +25,7 @@ export default class Board {
    * @returns {Array} All the valid array indices to which the piece in the from index may move.
    */
   getValidLocations(from) {
-    return valid_locations(this._fen, helpers.square2position(from), true)
+    return validLocations(this._fen, helpers.square2position(from), true)
       .map(helpers.position2square);
   }
 
@@ -84,15 +84,15 @@ export default class Board {
    */
   result() {
     const allMoves = this.allMoves();
-    let move_count = 0;
+    let moveCount = 0;
 
     for (const position in allMoves) {
-      move_count += allMoves[position].valid.length;
+      moveCount += allMoves[position].valid.length;
     }
 
-    if (move_count === 0 && is_check(this.getState(), this.getTurn())) {
+    if (moveCount === 0 && isCheck(this.getState(), this.getTurn())) {
       return (this.getTurn() === "w") ? "0-1" : "1-0";
-    } else if (move_count === 0) {
+    } else if (moveCount === 0) {
       return "1/2-1/2";
     }
   }
@@ -116,18 +116,18 @@ export default class Board {
    *      "g1": { piece: "N", valid: [ "h3", "f3" ] } }
    */
   allMoves() {
-    const piece_moves = {};
+    const pieceMoves = {};
 
     const self = this;
-    find_pieces(this.getState(), this.getTurn(), (piece, position) => {
+    findPieces(this.getState(), this.getTurn(), (piece, position) => {
       const valid = self.getValidLocations(helpers.position2square(position));
 
       if (valid.length > 0) {
-        piece_moves[helpers.position2square(position)] = { "piece": piece, "valid": valid };
+        pieceMoves[helpers.position2square(position)] = { "piece": piece, "valid": valid };
       }
     });
 
-    return piece_moves;
+    return pieceMoves;
   }
 
   /**
@@ -136,20 +136,20 @@ export default class Board {
    * prepare changes to state before calling private function, allowing
    * allows messaging for pawn promotion
    *
-   * @param {String} from_square Initial position of piece (e.g. "e2")
-   * @param {String} to_square final position of piece (e.g. "e4")
+   * @param {String} fromSquare Initial position of piece (e.g. "e2")
+   * @param {String} toSquare final position of piece (e.g. "e4")
    * @param (Board~moveCallback) A callback to be fired after move is complete
    *
    * @callback Board~moveCallback
    * @param {String|null} error An error if one occurred or null.
    * @param {Object} Data representing the event - used for promotion and capture
    */
-  move(from_square, to_square, callback) {
-    const from = helpers.square2position(from_square);
-    const to = helpers.square2position(to_square);
+  move(fromSquare, toSquare, callback) {
+    const from = helpers.square2position(fromSquare);
+    const to = helpers.square2position(toSquare);
 
     const piece = this._state[from];
-    const valid = valid_locations(this._fen, from, true);
+    const valid = validLocations(this._fen, from, true);
     const capture = (this._state[to] !== "");
     const captured = capture ? this._state[to] : null;
 

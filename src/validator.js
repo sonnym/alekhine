@@ -1,51 +1,51 @@
 import { fen2array, array2fen } from './fen'
 import * as helpers from './helpers'
 
-const white_pieces = ["K", "Q", "R", "B", "N", "P"];
-const black_pieces = ["k", "q", "r", "b", "n", "p"];
+const whitePieces = ["K", "Q", "R", "B", "N", "P"];
+const blackPieces = ["k", "q", "r", "b", "n", "p"];
 
 /* do not check for check when checking for check, lest check for check ad infinitum */
-function valid_locations(fen, start, check_for_check) {
-  const fen_parts = fen.split(" ");
+function validLocations(fen, start, checkForCheck) {
+  const fenParts = fen.split(" ");
   const state = fen2array(fen);
-  const turn = fen_parts[1];
-  const castle = fen_parts[2];
-  const en_passant = (!fen_parts[3] || fen_parts[3] === "-") ? null : helpers.square2position(fen_parts[3]);
+  const turn = fenParts[1];
+  const castle = fenParts[2];
+  const enPassant = (!fenParts[3] || fenParts[3] === "-") ? null : helpers.square2position(fenParts[3]);
   const piece = state[start];
 
-  if (piece === "" || (turn === "w" && !white_pieces.includes(piece)) || turn === "b" && !black_pieces.includes(piece)) return [];
+  if (piece === "" || (turn === "w" && !whitePieces.includes(piece)) || turn === "b" && !blackPieces.includes(piece)) return [];
 
   if (["P", "p"].includes(piece)) {
-    return pawn_check(state, turn, start, en_passant, check_for_check);
+    return pawnCheck(state, turn, start, enPassant, checkForCheck);
 
   } else if (["N", "n"].includes(piece)) {
-    if (check_for_check) {
-      const test_state = state.slice();
-      test_state[start] = "";  // knight move opens all lines through a point
+    if (checkForCheck) {
+      const testState = state.slice();
+      testState[start] = "";  // knight move opens all lines through a point
 
-      if (is_check(test_state, turn)) {
+      if (isCheck(testState, turn)) {
         return [];
       } else {
-        return mult_check(state, turn, start, [6, 10], 1, 1).concat(mult_check(state, turn, start, [15, 17], 2, 1));
+        return multiplicativeCheck(state, turn, start, [6, 10], 1, 1).concat(multiplicativeCheck(state, turn, start, [15, 17], 2, 1));
       }
-    } else return mult_check(state, turn, start, [6, 10], 1, 1).concat(mult_check(state, turn, start, [15, 17], 2, 1));
+    } else return multiplicativeCheck(state, turn, start, [6, 10], 1, 1).concat(multiplicativeCheck(state, turn, start, [15, 17], 2, 1));
 
   } else if (["B", "b"].includes(piece)) {
-    if (check_for_check) return exclude_blocking_check(state, turn, start, [7, 9]);
-    else return mult_check(state, turn, start, [7, 9], 1);
+    if (checkForCheck) return excludeBlockingCheck(state, turn, start, [7, 9]);
+    else return multiplicativeCheck(state, turn, start, [7, 9], 1);
 
   } else if (["R", "r"].includes(piece)) {
-    if (check_for_check) return exclude_blocking_check(state, turn, start, [1, 8]);
-    else return mult_check(state, turn, start, [1], 0).concat(mult_check(state, turn, start, [8], 1));
+    if (checkForCheck) return excludeBlockingCheck(state, turn, start, [1, 8]);
+    else return multiplicativeCheck(state, turn, start, [1], 0).concat(multiplicativeCheck(state, turn, start, [8], 1));
 
   } else if (["Q", "q"].includes(piece)) {
-    if (check_for_check) return exclude_blocking_check(state, turn, start, [1, 7, 8, 9]);
-    else return mult_check(state, turn, start, [1], 0).concat(mult_check(state, turn, start, [7, 8, 9], 1));
+    if (checkForCheck) return excludeBlockingCheck(state, turn, start, [1, 7, 8, 9]);
+    else return multiplicativeCheck(state, turn, start, [1], 0).concat(multiplicativeCheck(state, turn, start, [7, 8, 9], 1));
 
   } else if (["K", "k"].includes(piece)) {
-    const gross_valid = mult_check(state, turn, start, [1], 0, 1).concat(mult_check(state, turn, start, [7, 8, 9], 1, 1));
-    let test_state_a;
-    let test_state_b;
+    const grossValid = multiplicativeCheck(state, turn, start, [1], 0, 1).concat(multiplicativeCheck(state, turn, start, [7, 8, 9], 1, 1));
+    let testStateA;
+    let testStateB;
     const valid = [];
 
     // castling
@@ -53,72 +53,72 @@ function valid_locations(fen, start, check_for_check) {
       if (piece === "k" && start === 4) {
         if (castle.includes("k")) {
           if (state[5] === "" && state[6] === "") {
-            test_state_a = state.slice();
-            test_state_a[4] = "";
-            test_state_a[5] = "k";
+            testStateA = state.slice();
+            testStateA[4] = "";
+            testStateA[5] = "k";
 
-            test_state_b = state.slice();
-            test_state_b[4] = "";
-            test_state_b[6] = "k";
+            testStateB = state.slice();
+            testStateB[4] = "";
+            testStateB[6] = "k";
 
-            if (!is_check(test_state_a, turn) && !is_check(test_state_b, turn)) valid.push(6);
+            if (!isCheck(testStateA, turn) && !isCheck(testStateB, turn)) valid.push(6);
           }
         }
         if (castle.includes("q")) {
           if (state[3] === "" && state[2] === "" && state[1] === "") {
-            test_state_a = state.slice();
-            test_state_a[4] = "";
-            test_state_a[3] = "k";
+            testStateA = state.slice();
+            testStateA[4] = "";
+            testStateA[3] = "k";
 
-            test_state_b = state.slice();
-            test_state_b[4] = "";
-            test_state_b[2] = "k";
+            testStateB = state.slice();
+            testStateB[4] = "";
+            testStateB[2] = "k";
 
-            if (!is_check(test_state_a, turn) && !is_check(test_state_b, turn)) valid.push(2);
+            if (!isCheck(testStateA, turn) && !isCheck(testStateB, turn)) valid.push(2);
           }
         }
       } else if (piece === "K" && start === 60) {
         if (castle.includes("K")) {
           if (state[61] === "" && state[62] === "") {
-            test_state_a = state.slice();
-            test_state_a[60] = "";
-            test_state_a[61] = "K";
+            testStateA = state.slice();
+            testStateA[60] = "";
+            testStateA[61] = "K";
 
-            test_state_b = state.slice();
-            test_state_b[60] = "";
-            test_state_b[62] = "K";
+            testStateB = state.slice();
+            testStateB[60] = "";
+            testStateB[62] = "K";
 
-            if (!is_check(test_state_a, turn) && !is_check(test_state_b, turn)) valid.push(62);
+            if (!isCheck(testStateA, turn) && !isCheck(testStateB, turn)) valid.push(62);
           }
         }
         if (castle.includes("Q")) {
           if (state[59] === "" && state[58] === "" && state[57] === "") {
-            test_state_a = state.slice();
-            test_state_a[60] = "";
-            test_state_a[59] = "K";
+            testStateA = state.slice();
+            testStateA[60] = "";
+            testStateA[59] = "K";
 
-            test_state_b = state.slice();
-            test_state_b[60] = "";
-            test_state_b[58] = "K";
+            testStateB = state.slice();
+            testStateB[60] = "";
+            testStateB[58] = "K";
 
-            if (!is_check(test_state_a, turn) && !is_check(test_state_b, turn)) valid.push(58);
+            if (!isCheck(testStateA, turn) && !isCheck(testStateB, turn)) valid.push(58);
           }
         }
       }
     }
 
     // filter out checks
-    if (check_for_check) {
-      for (let i = 0, l = gross_valid.length; i < l; i++) {
-        test_state_a = state.slice();
-        test_state_a[start] = "";
-        test_state_a[gross_valid[i]] = piece;
+    if (checkForCheck) {
+      for (let i = 0, l = grossValid.length; i < l; i++) {
+        testStateA = state.slice();
+        testStateA[start] = "";
+        testStateA[grossValid[i]] = piece;
 
-        if (!is_check(test_state_a, turn)) valid.push(gross_valid[i])
+        if (!isCheck(testStateA, turn)) valid.push(grossValid[i])
       }
 
       return valid;
-    } else return gross_valid;
+    } else return grossValid;
   }
 }
 
@@ -126,22 +126,22 @@ function valid_locations(fen, start, check_for_check) {
  * @private
  *
  * check if moving a piece along a path results in check
- * unlike mult_check, encapsulates its own wrap conditions
+ * unlike multiplicativeCheck, encapsulates its own wrap conditions
  */
-function exclude_blocking_check(state, turn, start, paths) {
+function excludeBlockingCheck(state, turn, start, paths) {
   const piece = state[start];
   let valid = [];
 
   for (const p in paths) {
-    const valid_d = mult_check(state, turn, start, [paths[p]], (paths[p] === 1 ? 0 : 1));
+    const destinations = multiplicativeCheck(state, turn, start, [paths[p]], (paths[p] === 1 ? 0 : 1));
 
-    if (valid_d.length > 0) {
-      const state_d = state.slice(); // assign by value
-      state_d[valid_d[0]] = piece;
-      state_d[start] = "";
+    if (destinations.length > 0) {
+      const testState = state.slice(); // assign by value
+      testState[destinations[0]] = piece;
+      testState[start] = "";
 
-      if (!is_check(state_d, turn)) {
-        valid = valid.concat(valid_d);
+      if (!isCheck(testState, turn)) {
+        valid = valid.concat(destinations);
       }
     }
   }
@@ -150,49 +150,49 @@ function exclude_blocking_check(state, turn, start, paths) {
 }
 
 // handles edge cases for pawn movement
-function pawn_check(state, turn, start, ep, check_for_check) {
-  const gross_valid = [];
+function pawnCheck(state, turn, start, ep, checkForCheck) {
+  const grossValid = [];
 
   if (turn === "b") {
     var comp = (a, b) => parseInt(a) + parseInt(b);
-    var pieces = black_pieces;
-    var start_rank = [7, 16];
+    var pieces = blackPieces;
+    var startRank = [7, 16];
   } else if (turn === "w") {
     var comp = (a, b) => a - b;
-    var pieces = white_pieces;
-    var start_rank = [47, 56];
+    var pieces = whitePieces;
+    var startRank = [47, 56];
   }
 
   // forward movement
-  if (!state[comp(start, 8)]) gross_valid.push(comp(start, 8));
-  if (start > start_rank[0] && start < start_rank[1] && !state[comp(start, 8)] && !state[comp(start, 16)]) gross_valid.push(comp(start, 16));
+  if (!state[comp(start, 8)]) grossValid.push(comp(start, 8));
+  if (start > startRank[0] && start < startRank[1] && !state[comp(start, 8)] && !state[comp(start, 16)]) grossValid.push(comp(start, 16));
 
   // capture
-  if (state[comp(start, 7)] && !pieces.includes(state[comp(start, 7)]) && Math.abs(helpers.position2row(start) - helpers.position2row(comp(start, 7))) === 1) gross_valid.push(comp(start, 7));
-  if (state[comp(start, 9)] && !pieces.includes(state[comp(start, 9)]) && Math.abs(helpers.position2row(start) - helpers.position2row(comp(start, 9))) === 1) gross_valid.push(comp(start, 9));
+  if (state[comp(start, 7)] && !pieces.includes(state[comp(start, 7)]) && Math.abs(helpers.position2row(start) - helpers.position2row(comp(start, 7))) === 1) grossValid.push(comp(start, 7));
+  if (state[comp(start, 9)] && !pieces.includes(state[comp(start, 9)]) && Math.abs(helpers.position2row(start) - helpers.position2row(comp(start, 9))) === 1) grossValid.push(comp(start, 9));
 
   // en passant
-  if (ep && (comp(start, 7) === ep || comp(start, 9) === ep)) gross_valid.push(ep);
+  if (ep && (comp(start, 7) === ep || comp(start, 9) === ep)) grossValid.push(ep);
 
   // filter out checks
-  if (check_for_check) {
+  if (checkForCheck) {
     const valid = [];
 
-    for (let i = 0, l = gross_valid.length; i < l; i++) {
-      const test_state = state.slice();
-      test_state[gross_valid[i]] = test_state[start];
-      test_state[start] = "";
+    for (let i = 0, l = grossValid.length; i < l; i++) {
+      const testState = state.slice();
+      testState[grossValid[i]] = testState[start];
+      testState[start] = "";
 
-      if (!is_check(test_state, turn)) valid.push(gross_valid[i])
+      if (!isCheck(testState, turn)) valid.push(grossValid[i])
     }
 
     return valid;
-  } else return gross_valid;
+  } else return grossValid;
 }
 
 /**
  * @private
- * @function mult_check
+ * @function multiplicativeCheck
  *
  * returns valid indices from the board array to which a piece can move
  *
@@ -204,7 +204,7 @@ function pawn_check(state, turn, start, ep, check_for_check) {
  * the main idea here is:  when numbering the pieces of a chess board from 0 to 63, all pieces move multiples of certain integers from their starting position,
  * and cannot wrap around the board, except in the case of the knight which *must* appear to wrap into the next rank or the one after
  */
-function mult_check(state, turn, start, distances, wrap, depth) {
+function multiplicativeCheck(state, turn, start, distances, wrap, depth) {
   const valid = [];
   const iter = (start < 32) ? (cur, dist) => start + (dist * cur) < 64
                           : (cur, dist) => start - (dist * cur) >= 0;
@@ -218,24 +218,24 @@ function mult_check(state, turn, start, distances, wrap, depth) {
       // traversing an array; indices is literal; equidistant from start position; target locations
       const indices = [start + (distance * current), start - (distance * current)]; // do: [start, start]
 
-      const prev_indices = [start + (distance * (current - 1)), start - (distance * (current - 1))];
+      const prevIndices = [start + (distance * (current - 1)), start - (distance * (current - 1))];
 
       for (const i in indices) {
         const index = indices[i];
-        const prev_index = prev_indices[i];
-        const row_diff = Math.abs(helpers.position2row(prev_index) - helpers.position2row(index));
+        const prevIndex = prevIndices[i];
+        const rowDiff = Math.abs(helpers.position2row(prevIndex) - helpers.position2row(index));
 
         if (index < 64 && index >= 0 && !blocked[i]) {
           // if exact number of wraps is not met, ignore location (accounts for edge wrapping and knight minimums)
-          if (row_diff !== wrap) blocked[i] = true;
+          if (rowDiff !== wrap) blocked[i] = true;
 
           if (!blocked[i]) {
-            const piece_in_target = state[index];
+            const targetPiece = state[index];
 
-            if (!piece_in_target) valid.push(index);
+            if (!targetPiece) valid.push(index);
             else  {
               // allow capture on first block if opposing piece in way
-              if (turn === "w" && black_pieces.includes(piece_in_target) || turn === "b" && white_pieces.includes(piece_in_target)) valid.push(index);
+              if (turn === "w" && blackPieces.includes(targetPiece) || turn === "b" && whitePieces.includes(targetPiece)) valid.push(index);
               blocked[i] = true;
             }
           }
@@ -251,7 +251,7 @@ function mult_check(state, turn, start, distances, wrap, depth) {
 
 /**
  * @private
- * @method find_pieces
+ * @method findPieces
  *
  * finds all the pieces for a givne player, and passes the piece ascii value
  * and position to a callback.
@@ -262,8 +262,8 @@ function mult_check(state, turn, start, distances, wrap, depth) {
  *   - piece String ascii representation of the piece
  *   - position Number the position of the piece in the state array
  */
-function find_pieces(state, player, callback) {
-  const piece_checker = piece => {
+function findPieces(state, player, callback) {
+  const pieceChecker = piece => {
     const ascii = piece.charCodeAt(0);
     return (player === "w" && ascii > 64 && ascii < 91) ||
            (player === "b" && ascii > 96 && ascii < 123);
@@ -272,7 +272,7 @@ function find_pieces(state, player, callback) {
   for (let i = 0; i < 64; i++) {
     const piece = state[i];
 
-    if (piece !== "" && piece_checker(piece)) {
+    if (piece !== "" && pieceChecker(piece)) {
       callback(piece, i);
     }
   }
@@ -280,7 +280,7 @@ function find_pieces(state, player, callback) {
 
 /**
  * @private
- * @method is_check
+ * @method isCheck
  *
  * determine whether the given state is check for the player
  *
@@ -289,27 +289,27 @@ function find_pieces(state, player, callback) {
  *
  * returns Boolean
  */
-function is_check(state, whom) {
+function isCheck(state, whom) {
   const turn = (whom === "w") ? "b" : "w";
-  let king_position = null;
+  let kingPosition = null;
 
-  for (let i = 0; i < 64 && !king_position; i++) {
+  for (let i = 0; i < 64 && !kingPosition; i++) {
     if ((whom === "b" && state[i] === "k") || (whom === "w" && state[i] === "K")) {
-      king_position = i;
+      kingPosition = i;
     }
   }
 
-  let is_check = false;
+  let isCheck = false;
 
-  find_pieces(state, turn, (piece, position) => {
-    const valid = valid_locations(`${array2fen(state)} ${turn}`, position, false);
+  findPieces(state, turn, (piece, position) => {
+    const valid = validLocations(`${array2fen(state)} ${turn}`, position, false);
 
-    if (valid.includes(king_position)) {
-      is_check = true;
+    if (valid.includes(kingPosition)) {
+      isCheck = true;
     }
   });
 
-  return is_check;
+  return isCheck;
 }
 
-export { valid_locations, find_pieces, is_check }
+export { validLocations, findPieces, isCheck }
